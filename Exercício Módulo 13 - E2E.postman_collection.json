@@ -1,0 +1,625 @@
+{
+	"info": {
+		"_postman_id": "aeea740d-57c1-43dc-ae4f-d034396d8b63",
+		"name": "Exercício Módulo 13 - E2E",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11813079",
+		"_collection_link": "https://millionariesdevs.postman.co/workspace/Api's-EBAC~1a7f1095-e6f5-4bbd-81a5-4abd4d0514c1/collection/11813079-aeea740d-57c1-43dc-ae4f-d034396d8b63?action=share&source=collection_link&creator=11813079"
+	},
+	"item": [
+		{
+			"name": "Sucesso no login - Dados válidos.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"pm.environment.set(\"Token\", response.authorization);\r",
+							"\r",
+							"pm.test(\"Login efetuado ao utilizar dados válidos.\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(pm.response.text()).to.include(\"Login realizado com sucesso\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n  \"email\": \"Ebac_teste_cad@gmail.com.br\",\r\n  \"password\": \"teste@2025\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Falha no login -  Dados inválidos.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Tentar efetuar Login utilizando dados inválidos, deve falhar.\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n  \"email\": \"login_Invalido@gmail.com.br\",\r\n  \"password\": \"falha2025\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sucesso ao Listar usuários.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Lista de usuarios cadastrados apresentado com sucesso.\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Serverest}}usuarios",
+					"host": [
+						"{{Serverest}}usuarios"
+					],
+					"query": [
+						{
+							"key": "_id",
+							"value": "Fu28VgmsPIDLZ0oz",
+							"disabled": true
+						},
+						{
+							"key": "nome",
+							"value": "tst Ebac",
+							"disabled": true
+						},
+						{
+							"key": "email",
+							"value": "Ebac@gmail.com.br",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "teste1",
+							"disabled": true
+						},
+						{
+							"key": "administrador",
+							"value": "true",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sucesso ao cadastrar usuário.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const user_Id = pm.response.json();\r",
+							"pm.environment.set(\"userId\", user_Id._id);\r",
+							"\r",
+							"pm.test(\"Cadastro de usuário realizado com sucesso.\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"    pm.expect(pm.response.json().message).to.eql(\"Cadastro realizado com sucesso\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n  \"nome\": \"Teste Cad Ebac 0002\",\r\n  \"email\": \"Ebac_teste_cad_0002@gmail.com.br\",\r\n  \"password\": \"teste@2025\",\r\n  \"administrador\": \"true\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Serverest}}usuarios",
+					"host": [
+						"{{Serverest}}usuarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Falha ao cadastrar usuário.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Tentar efetuar cadastro utilizando e-mail duplicado, deve falhar.\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"    pm.expect(pm.response.text()).to.include(\"Este email já está sendo usado\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n  \"nome\": \"Teste Cad Ebac 03\",\r\n  \"email\": \"Ebac_teste_cad_03@gmail.com.br\",\r\n  \"password\": \"teste@2025\",\r\n  \"administrador\": \"true\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Serverest}}usuarios",
+					"host": [
+						"{{Serverest}}usuarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sucesso ao buscar usuários por ID válido.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Buscar usuario utilizando ID válido.\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(pm.response.text()).to.include(\"_id\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n  \"nome\": \"tst Ebac\",\r\n  \"email\": \"Ebac@qxa.com.br\",\r\n  \"password\": \"teste1\",\r\n  \"administrador\": \"true\"\r\n}"
+				},
+				"url": {
+					"raw": "{{Serverest}}usuarios/{{userId}}",
+					"host": [
+						"{{Serverest}}usuarios"
+					],
+					"path": [
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Falha ao buscar usuários por ID inválido.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Tentar buscar usuário com ID inválido, deve falhar.\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"    pm.expect(pm.response.text()).to.include(\"Usuário não encontrado\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n  \"nome\": \"tst Ebac\",\r\n  \"email\": \"Ebac@qxa.com.br\",\r\n  \"password\": \"teste1\",\r\n  \"administrador\": \"true\"\r\n}"
+				},
+				"url": {
+					"raw": "{{Serverest}}usuarios/0000000000000000",
+					"host": [
+						"{{Serverest}}usuarios"
+					],
+					"path": [
+						"0000000000000000"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Falha ao buscar usuários por ID com caracteres inválidos.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Tentar buscar ID de usuário com caracteres inválidos, deve falhar.\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"    pm.expect(pm.response.text()).to.include(\"id deve ter exatamente 16 caracteres alfanuméricos\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n  \"nome\": \"tst Ebac\",\r\n  \"email\": \"Ebac@qxa.com.br\",\r\n  \"password\": \"teste1\",\r\n  \"administrador\": \"true\"\r\n}"
+				},
+				"url": {
+					"raw": "{{Serverest}}usuarios/000000000000$_@",
+					"host": [
+						"{{Serverest}}usuarios"
+					],
+					"path": [
+						"000000000000$_@"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sucesso ao editar usuário.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Usuário alterado com sucesso.\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(pm.response.text()).to.include(\"Registro alterado com sucesso\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nome\": \"Teste Cad Ebac 1010\",\r\n  \"email\": \"Ebac_teste_cad_1010@gmail.com.br\",\r\n  \"password\": \"teste\",\r\n  \"administrador\": \"true\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Serverest}}usuarios/{{userId}}",
+					"host": [
+						"{{Serverest}}usuarios"
+					],
+					"path": [
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Falha ao editar usuário não encontrado, deve efetuar um novo cadastro.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Tentar alterar usuario com ID não encontrado, deve efetuar um novo cadastro.\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"    pm.expect(pm.response.text()).to.include(\"Cadastro realizado com sucesso\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nome\": \"Teste Cad Ebac 1112\",\r\n  \"email\": \"Ebac11_teste_cad_001@gmail.com.br\",\r\n  \"password\": \"teste\",\r\n  \"administrador\": \"true\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Serverest}}usuarios/000000000000004",
+					"host": [
+						"{{Serverest}}usuarios"
+					],
+					"path": [
+						"000000000000004"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Falha ao editar usuário com e-mail já cadastrado.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Tentar editar usuário com e-mail já utilizado, deve falhar.\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"    pm.expect(pm.response.text()).to.include(\"Este email já está sendo usado\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nome\": \"Teste Cad Ebac 1010\",\r\n  \"email\": \"Ebac11_teste_cad_123@gmail.com.br\",\r\n  \"password\": \"teste\",\r\n  \"administrador\": \"true\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Serverest}}usuarios/000000000000001",
+					"host": [
+						"{{Serverest}}usuarios"
+					],
+					"path": [
+						"000000000000001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sucesso ao deletar usuário.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Usuário excluído com sucesso\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(pm.response.text()).to.include(\"Registro excluído com sucesso\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nome\": \"Notebook\",\r\n  \"preco\": 4700,\r\n  \"descricao\": \"Notebook\",\r\n  \"quantidade\": 666\r\n}"
+				},
+				"url": {
+					"raw": "{{Serverest}}usuarios/OZdQXY7F3h3o88yD",
+					"host": [
+						"{{Serverest}}usuarios"
+					],
+					"path": [
+						"OZdQXY7F3h3o88yD"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Falha ao tentar deletar usuário já excluído.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Tentar excluir usuários já excluídos, deve falhar.\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(pm.response.text()).to.include(\"Nenhum registro excluído\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nome\": \"Notebook\",\r\n  \"preco\": 4700,\r\n  \"descricao\": \"Notebook\",\r\n  \"quantidade\": 666\r\n}"
+				},
+				"url": {
+					"raw": "{{Serverest}}usuarios/OZdQXY7F3h3o88yD",
+					"host": [
+						"{{Serverest}}usuarios"
+					],
+					"path": [
+						"OZdQXY7F3h3o88yD"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Falha ao tentar deletar usuário com carrinho cadastrado.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Tentar excluir usuário com carrinho cadastrado, deve falhar.\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"    pm.expect(pm.response.text()).to.include(\"Não é permitido excluir usuário com carrinho cadastrado\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nome\": \"Notebook\",\r\n  \"preco\": 4700,\r\n  \"descricao\": \"Notebook\",\r\n  \"quantidade\": 666\r\n}"
+				},
+				"url": {
+					"raw": "{{Serverest}}usuarios/qbMqntef4iTOwWfg",
+					"host": [
+						"{{Serverest}}usuarios"
+					],
+					"path": [
+						"qbMqntef4iTOwWfg"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
